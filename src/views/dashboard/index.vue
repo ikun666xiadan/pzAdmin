@@ -1,5 +1,7 @@
 <template>
-  <RouterView/>
+    <div>
+        控制台
+    </div>
 </template>
 
 <script setup>
