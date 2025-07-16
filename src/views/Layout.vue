@@ -1,9 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="400px">
-        <Aside />
-      </el-aside>
+      <Aside />
       <el-container>
         <el-header>Header</el-header>
         <el-main>Main</el-main>
@@ -13,6 +11,17 @@
 </template>
 
 <script setup>
-import Aside from "../components/aside.vue"
-
+import Aside from "../components/Aside.vue";
 </script>
+
+<style lang="less" scoped>
+.common-layout {
+  height: 100%;
+  .el-container {
+    height: 100%;
+    .el-col-12 {
+      flex: 0;
+    }
+  }
+}
+</style>
