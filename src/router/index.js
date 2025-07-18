@@ -13,6 +13,7 @@ const routes = [
     path: '/',
     component: Layout,
     name: 'main',
+    redirect: '/dashboard',
     children: [
       {
         path: 'dashboard',
@@ -24,8 +25,7 @@ const routes = [
         meta: { id: '2' ,name: '权限管理', icon: 'Grid' },
         children: [
           {
-            path: '',
-            alias: ['admin'],
+            path: 'admin',
             meta: { id: '1', name: '账号管理', icon: 'Avatar', path: '/auth/admin', describe: '管理员可以进行编辑，权限修改后需要登出才会生效' },
             component: Admin
           },
@@ -41,8 +41,7 @@ const routes = [
         meta: { id: '3', name: 'DIDI陪诊', icon: 'BellFilled' },
         children: [
           {
-            path: '',
-            alias: ['staff'],
+            path: 'staff',
             meta: { id: '1', name: '陪护管理', icon: 'Checked', path: '/vppz/staff', describe: '陪护师可以进行创建和修改，设置对应生效状态控制C端选择' },
             component: Staff
           },

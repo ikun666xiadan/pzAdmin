@@ -4,7 +4,9 @@
       <Aside />
       <el-container>
         <el-header>Header</el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <RouterView/>
+        </el-main>
       </el-container>
     </el-container>
   </div>

@@ -5,6 +5,7 @@
         background-color="#545c64"
         class="aside-container"
         text-color="#fff"
+        :default-active="activeMenu"
         @open="handleOpen"
         @close="handleClose"
       >
@@ -15,12 +16,37 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import TreeMenu from './treeMenu.vue';
 
 const router = useRouter()
+const route = useRoute()
 const menuData = ref(router.options.routes[0].children)
+
+// 计算当前激活的菜单项
+const activeMenu = computed(() => {
+  const currentPath = route.path
+  
+  // 递归查找激活的菜单项
+  const findActiveMenu = (menus, parentIndex = '1') => {
+    for (const menu of menus) {
+      // 检查当前菜单项是否匹配
+      if (menu.meta && menu.meta.path === currentPath) {
+        return `${parentIndex}-${menu.meta.id}`
+      }
+      
+      // 检查子菜单
+      if (menu.children) {
+        const found = findActiveMenu(menu.children, `${parentIndex}-${menu.meta.id}`)
+        if (found) return found
+      }
+    }
+    return ''
+  }
+  
+  return findActiveMenu(menuData.value)
+})
 
 const handleOpen = ()=>{}
 const handleClose = ()=>{}
