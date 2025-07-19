@@ -1,14 +1,14 @@
 <template>
   <div class="header">
     <div class="header_left flex_box">
-      <el-icon class="icon" @click="store.commit('setIsCollapse')"><Fold /></el-icon>
+      <el-icon class="icon" @click="store.commit('setIsCollapse')"
+        ><Fold
+      /></el-icon>
     </div>
     <div class="header_right flex_box">
       <img src="../assets/card_1.png" alt="" />
       <el-dropdown>
-        <span class="username">
-          admin
-        </span>
+        <span class="username"> admin </span>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>退出登录</el-dropdown-item>
@@ -22,8 +22,7 @@
 <script setup>
 import { useStore } from "vuex";
 
-const store = useStore()
-
+const store = useStore();
 </script>
   
 <style lang="less" scoped>
@@ -64,7 +63,7 @@ const store = useStore()
       overflow: hidden;
     }
     .username {
-        cursor: pointer;
+      cursor: pointer;
     }
   }
 }
