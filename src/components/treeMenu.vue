@@ -31,14 +31,18 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-
+import { useStore } from "vuex";
 const props = defineProps(["menuData", "index"]);
 
 // 创建router实例
 const router = useRouter()
-
+const store = useStore()
+// 点击菜单
 const handelRouter = (item,activeId)=>{
   // 路由跳转
   router.push(item.meta.path)
+  store.commit('addMenu',item.meta)
+  console.log(item.meta);
+  
 }
 </script>
