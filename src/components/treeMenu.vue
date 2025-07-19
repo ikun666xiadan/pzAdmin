@@ -30,14 +30,12 @@
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router';
-import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps(["menuData", "index"]);
 
 // 创建router实例
 const router = useRouter()
-const route = useRoute()
 
 const handelRouter = (item,activeId)=>{
   // 路由跳转

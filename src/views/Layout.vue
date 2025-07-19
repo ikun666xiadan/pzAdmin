@@ -1,9 +1,13 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <Aside />
+      <el-aside width="200px" height="100%">
+        <Aside />
+      </el-aside>
       <el-container>
-        <el-header>Header</el-header>
+        <el-header>
+          <Header />
+        </el-header>
         <el-main>
           <RouterView/>
         </el-main>
@@ -13,7 +17,8 @@
 </template>
 
 <script setup>
-import Aside from "../components/Aside.vue";
+import Aside from "../components/aside.vue";
+import Header from "../components/header.vue";
 </script>
 
 <style lang="less" scoped>
@@ -23,6 +28,7 @@ import Aside from "../components/Aside.vue";
     height: 100%;
     .el-col-12 {
       flex: 0;
+      height: 100%;
     }
   }
 }
