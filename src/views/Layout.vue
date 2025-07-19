@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px" height="100%">
+      <el-aside :width="isCollapse ? '64px' : '200px'" height="100%">
         <Aside />
       </el-aside>
       <el-container>
@@ -17,8 +17,13 @@
 </template>
 
 <script setup>
+import { useStore } from "vuex";
+import { computed } from "vue";
 import Aside from "../components/aside.vue";
 import Header from "../components/header.vue";
+
+const store = useStore()
+const isCollapse = computed(()=>store.state.menu.isCollapse)
 </script>
 
 <style lang="less" scoped>

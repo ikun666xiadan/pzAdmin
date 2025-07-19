@@ -8,8 +8,10 @@
         :default-active="activeMenu"
         @open="handleOpen"
         @close="handleClose"
+        :collapse="isCollapse"
+        :style="{width:isCollapse ? '64px' : '200px'}"
       >
-        <p class="title">DIDI陪诊</p>
+        <p class="title">{{isCollapse ? 'DIDI' : 'DIDI陪诊'}}</p>
         <TreeMenu :menuData="menuData" :index="1" />
       </el-menu>
     </el-col>
@@ -19,6 +21,9 @@
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import TreeMenu from './treeMenu.vue';
+import { useStore } from "vuex";
+const store = useStore()
+const isCollapse = computed(()=>store.state.menu.isCollapse)
 
 const router = useRouter()
 const route = useRoute()
@@ -55,7 +60,6 @@ const handleClose = ()=>{}
 <style lang="less" scoped>
 .aside-container{
   height: 100%;
-  width: 200px;
   .title{
     font-size: 20px;
     text-align: center;

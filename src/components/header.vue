@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="header_left flex_box">
-      <el-icon class="icon"><Fold /></el-icon>
+      <el-icon class="icon" @click="store.commit('setIsCollapse')"><Fold /></el-icon>
     </div>
     <div class="header_right flex_box">
       <img src="../assets/card_1.png" alt="" />
@@ -19,10 +19,14 @@
   </div>
 </template>
   
-  <script setup>
+<script setup>
+import { useStore } from "vuex";
+
+const store = useStore()
+
 </script>
   
-  <style lang="less" scoped>
+<style lang="less" scoped>
 .flex_box {
   display: flex;
   align-items: center;
@@ -40,9 +44,14 @@
       width: 45px;
       height: 100%;
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
     }
     .icon:hover {
       background: #f5f5f5;
+      transform: scale(1.05);
+    }
+    .icon:active {
+      transform: scale(0.95);
     }
   }
   .header_right {
