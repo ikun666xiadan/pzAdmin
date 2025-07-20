@@ -16,7 +16,7 @@
         <span class="username"> admin </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click="goLogin">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -59,6 +59,11 @@ const close = (item,index)=>{
     })
   }
 }
+
+const goLogin = ()=>{
+  router.push('/login')
+}
+
 </script>
   
 <style lang="less" scoped>
