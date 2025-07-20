@@ -4,7 +4,7 @@
       <el-card style="max-width: 480px" class="card">
         <template #header>
           <div class="login_head">
-            <img :src="login_head" alt="" class="img" />
+            <img src="/login-head.png" alt="" class="img" />
           </div>
         </template>
         <div class="login_tip">
@@ -61,7 +61,6 @@
 import { ref, reactive } from "vue";
 import { Iphone, Lock, Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import login_head from "../../../public/login-head.png";
 import { useRouter } from "vue-router";
 
 const loginFormRef = ref();
