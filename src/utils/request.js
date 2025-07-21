@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { removeToken } from './handleToken'
 
 // 创建 axios 实例
 const http = axios.create({
@@ -33,8 +34,7 @@ http.interceptors.response.use(
         }
         // token失效
         if (response.data.code === -2) {
-            localStorage.removeItem('token')
-            localStorage.removeItem('userInfo')
+            removeToken()
             // 跳转到登录页
             window.location.href = window.location.origin
         }

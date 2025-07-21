@@ -39,6 +39,7 @@
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { removeToken } from "../utils/handleToken";
 
 const store = useStore();
 const selectedMenu = computed(() => store.state.menu.selectedMenu);
@@ -79,8 +80,7 @@ const goLogin = () => {
     type: "warning",
   })
     .then(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userInfo");
+      removeToken();
       router.push("/login");
       ElMessage({
         type: "success",

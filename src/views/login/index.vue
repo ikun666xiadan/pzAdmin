@@ -63,6 +63,7 @@ import { Iphone, Lock, Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { createAccountAPI, getCodeAPI, loginAPI } from "../../api/login";
+import { setToken } from "../../utils/handleToken";
 
 const loginFormRef = ref();
 const loading = ref(false);
@@ -152,8 +153,7 @@ const login = async () => {
         passWord: loginForm.passWord,
       });
       if (res.code === 10000) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
+        setToken(res);
         router.push("/");
         ElMessage.success("登录成功！");
       }
@@ -164,8 +164,7 @@ const login = async () => {
         validCode: loginForm.validCode,
       });
       if (res.code === 10000) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
+        setToken(res);
         router.push("/");
         ElMessage.success("注册成功！");
       }
