@@ -1,19 +1,22 @@
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 // 创建 axios 实例
-const service = axios.create({
-    baseURL: '/api', // 根据需要修改
-    timeout: 10000, // 请求超时时间
+const http = axios.create({
+    baseURL: 'https://v3pz.itndedu.com/v3pz', 
+    timeout: 10000, 
 })
 
 // 请求拦截器
-service.interceptors.request.use(
+http.interceptors.request.use(
     config => {
         // 这里可以添加 token 等操作
-        // const token = localStorage.getItem('token')
-        // if (token) {
-        //   config.headers.Authorization = `Bearer ${token}`
-        // }
+        const token = localStorage.getItem('token')
+        // 不需要添加token的api
+        const whiteURL = ['/get/code','/user/authentication','/login']
+        if (token || !whiteURL.includes(config.url)) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
         return config
     },
     error => {
@@ -22,9 +25,12 @@ service.interceptors.request.use(
 )
 
 // 响应拦截器
-service.interceptors.response.use(
+http.interceptors.response.use(
     response => {
         // 直接返回数据部分
+        if(response.data.code === -1){
+            ElMessage.warning(response.data.message)
+        }
         return response.data
     },
     error => {
@@ -34,4 +40,4 @@ service.interceptors.response.use(
     }
 )
 
-export default service
+export default http
