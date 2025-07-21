@@ -153,6 +153,7 @@ const login = async () => {
       });
       if (res.code === 10000) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
         router.push("/");
         ElMessage.success("登录成功！");
       }
@@ -164,6 +165,7 @@ const login = async () => {
       });
       if (res.code === 10000) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
         router.push("/");
         ElMessage.success("注册成功！");
       }

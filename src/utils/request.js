@@ -26,9 +26,17 @@ http.interceptors.request.use(
 
 // 响应拦截器
 http.interceptors.response.use(
+    // 同一错误拦截处理
     response => {
         if (response.data.code === -1) {
             ElMessage.warning(response.data.msg || response.data.message?.msg || response.data.message)
+        }
+        // token失效
+        if (response.data.code === -2) {
+            localStorage.removeItem('token')
+            localStorage.removeItem('userInfo')
+            // 跳转到登录页
+            window.location.href = window.location.origin
         }
         return response.data
     },
