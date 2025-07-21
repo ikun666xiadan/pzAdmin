@@ -62,6 +62,7 @@ import { ref, reactive } from "vue";
 import { Iphone, Lock, Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
+import { createAccountAPI, getCodeAPI, loginAPI } from "../../api/login";
 
 const loginFormRef = ref();
 const loading = ref(false);
@@ -79,7 +80,6 @@ const router = useRouter();
 
 const changeStatus = () => {
   isLogin.value = !isLogin.value;
-  loginForm.value?.resetFields();
 };
 
 // 表单验证规则
@@ -114,7 +114,10 @@ const sendCode = async () => {
 
   try {
     codeLoading.value = true;
-    ElMessage.success("验证码发送成功！");
+    const res = await getCodeAPI({ tel: loginForm.userName });
+    if (res.code === 10000) {
+      ElMessage.success("验证码发送成功！");
+    }
     startCountDown();
   } catch (error) {
     ElMessage.error("验证码发送失败，请重试");
@@ -143,11 +146,28 @@ const login = async () => {
 
   try {
     loading.value = true;
-    await loginFormRef.value.validate();
-
-    router.push("/");
-    // ElMessage.success("注册成功！");
-    ElMessage.success("登录成功！");
+    if (isLogin.value) {
+      const res = await loginAPI({
+        userName: loginForm.userName,
+        passWord: loginForm.passWord,
+      });
+      if (res.code === 10000) {
+        localStorage.setItem("token", res.data.token);
+        router.push("/");
+        ElMessage.success("登录成功！");
+      }
+    } else {
+      const res = await createAccountAPI({
+        userName: loginForm.userName,
+        passWord: loginForm.passWord,
+        validCode: loginForm.validCode,
+      });
+      if (res.code === 10000) {
+        localStorage.setItem("token", res.data.token);
+        router.push("/");
+        ElMessage.success("注册成功！");
+      }
+    }
   } catch (error) {
     console.error("表单验证失败:", error);
     ElMessage.error("请检查输入信息");
