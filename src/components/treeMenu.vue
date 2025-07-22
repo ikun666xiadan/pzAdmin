@@ -41,8 +41,6 @@ const store = useStore()
 const handelRouter = (item,activeId)=>{
   // 路由跳转
   router.push(item.meta.path)
-  store.commit('addMenu',item.meta)
-  console.log(item.meta);
-  
+  store.commit('addMenu',item.meta)  
 }
 </script>
