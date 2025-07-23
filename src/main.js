@@ -6,6 +6,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import store from './store'
+import panelHeader from './components/panel-header.vue'
+
 
 // 添加路由守卫（前置路由守卫）
 router.beforeEach((to, from) => {
@@ -26,6 +28,9 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+
+// 全局注入panelHeader组件
+app.component('panelHeader',panelHeader)
 
 // 使用 Element Plus
 app.use(ElementPlus)

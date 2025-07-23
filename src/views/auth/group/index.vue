@@ -1,4 +1,5 @@
 <template>
+  <panelHeader/>
   <el-button type="primary" @click="open(null)" style="margin: 10px 0"
     >新增</el-button
   >
