@@ -14,9 +14,9 @@
       </template>
     </el-table-column>
     <el-table-column prop="create_time" label="创建时间">
-      <!-- <template #default="scope">
-        <span>{{ }}</span>
-      </template> -->
+      <template #default="scope">
+        <span>{{ handelTime(scope.row.create_time) }}</span>
+      </template>
     </el-table-column>
     <el-table-column label="操作">
       <template #default="scope">
@@ -62,6 +62,7 @@
 <script setup>
 import { nextTick, onMounted, reactive, ref } from "vue";
 import { getAuthDataAPI, getSelectListAPI } from "../../../api/auth";
+import handelTime from "../../../utils/handelTime";
 
 const dialogFormVisible = ref(false);
 const formRef = ref();
