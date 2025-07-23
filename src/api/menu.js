@@ -10,4 +10,9 @@ const setMenuAPI = (data)=>{
     return request.post('/user/setmenu',data)
 }
 
-export  { getMenuAPI, setMenuAPI }
+// 菜单权限列表
+const getMenuListAPI = (params)=>{
+    return request.get('/menu/list',{params})
+}
+
+export  { getMenuAPI, setMenuAPI, getMenuListAPI }
