@@ -1,32 +1,57 @@
 <template>
-  <el-table style="width: 100%">
+  <el-table style="width: 100%" :data="authData.list">
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />
-    <el-table-column prop="groupBy" label="所属组别"/>
-    <el-table-column prop="phone" label="手机号" />
-    <el-table-column prop="status" label="状态" />
-    <el-table-column prop="createdTime" label="创建时间" />
+    <el-table-column prop="permissions_id" label="所属组别">
+      <template #default="scope">
+        <span>{{ permissionName(scope.row.permissions_id) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="mobile" label="手机号" />
+    <el-table-column prop="active" label="状态">
+      <template #default="scope">
+        <el-tag :type="scope.row.active ? 'success' : 'danger' ">{{scope.row.active ? '正常' : '异常' }}</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="create_time" label="创建时间">
+      <!-- <template #default="scope">
+        <span>{{ }}</span>
+      </template> -->
+    </el-table-column>
     <el-table-column label="操作">
-      <template #default="">
-        <el-button type="primary">编辑</el-button>
+      <template #default="scope">
+        <el-button type="primary" @click="edit(scope.row)">编辑</el-button>
       </template>
     </el-table-column>
   </el-table>
-  <!-- <div class="pagination-info">
+  <div class="pagination-info">
     <el-pagination
-      v-model:current-page="paginationData.pageNum"
+      :current-page="paginationData.pageNum"
       :page-size="paginationData.pageSize"
+      :total="authData.total"
+      layout="total, prev, pager, next"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
     />
-  </div> -->
-  <el-dialog v-model="dialogFormVisible" title="编辑用户" width="500">
-    <el-form :model="form" style="max-width: 600px" ref="formRef">
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="form.phone" />
+  </div>
+  <el-dialog v-model="dialogFormVisible" title="编辑用户" width="500" :before-close="beforeClose">
+    <el-form :model="form" style="max-width: 600px" ref="formRef" label-width="auto">
+      <el-form-item label="手机号" prop="mobile">
+        <el-input v-model="form.mobile" />
       </el-form-item>
       <el-form-item label="昵称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="菜单权限" prop="permissions"></el-form-item>
+      <el-form-item label="菜单权限" prop="permissions">
+        <el-select v-model="value" placeholder="超级管理员" style="width: 240px">
+        <el-option
+          v-for="item in selectList"
+          :key="item.id"
+          :label="item.name"
+          :value="item.name"
+        />
+      </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" style="margin-left: 400px">提交</el-button>
       </el-form-item>
@@ -35,16 +60,62 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { nextTick, onMounted, reactive, ref } from "vue";
+import { getAuthDataAPI, getSelectListAPI } from "../../../api/auth";
 
 const dialogFormVisible = ref(false);
 const formRef = ref();
 const paginationData = reactive({ pageNum: 1, pageSize: 10 });
 const form = reactive({
-  phone: "",
+  mobile: "",
   name: "",
   permissions: "",
 });
+const authData = ref({  list: [],total: 0,});
+const value = ref('')
+const selectList = ref([])
+
+onMounted(async() => {
+  const res = await getSelectListAPI()
+  selectList.value = res.data
+  getAuthList();
+});
+
+const getAuthList = async () => {
+  const res = await getAuthDataAPI(paginationData);
+  authData.value = res.data;
+};
+
+const edit = (rowData)=>{
+  dialogFormVisible.value = true
+  console.log(rowData);
+  
+  nextTick(()=>{
+    Object.assign(form, { mobile: rowData.mobile, name: rowData.name });
+  })  
+}
+
+// 关闭弹窗回调
+const beforeClose = () => {
+  dialogFormVisible.value = false;
+  formRef.value.resetFields();
+};
+
+// 根据id匹配所属组别
+const permissionName = (id)=>{
+  const data = selectList.value.find(item => item.id === id)
+  return data ? data.name : '超级管理员'
+}
+
+// 处理分页-
+const handleSizeChange = (value) => {
+  paginationData.pageSize = value;
+  getAuthList();
+};
+const handleCurrentChange = (value) => {
+  paginationData.pageNum = value;
+  getAuthList();
+};
 </script>
 
 <style lang="less" scoped>
