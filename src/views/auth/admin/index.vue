@@ -102,7 +102,9 @@ const authData = ref({ list: [], total: 0 });
 const selectList = ref([]);
 const rules = ref({
   name: [{ required: true, trigger: "blur", message: "请输填写昵称" }],
-  permissions_id: [{ required: true, trigger: "blur", message: "请选择菜单权限" }],
+  permissions_id: [
+    { required: true, trigger: "blur", message: "请选择菜单权限" },
+  ],
 });
 
 onMounted(async () => {
@@ -131,12 +133,12 @@ const submit = async (formEl) => {
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      updateUserInfo({
+      await updateUserInfo({
         name: form.name,
         permissions_id: form.permissions_id,
-      }); 
+      });
       dialogFormVisible.value = false;
-      await getAuthList();
+      getAuthList();
       ElMessage.success("修改成功");
     } else {
       console.log("error submit", fields);
