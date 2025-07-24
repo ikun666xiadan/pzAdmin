@@ -10,4 +10,9 @@ const getSelectListAPI = ()=>{
     return request.get('/menu/selectlist',)
 }
 
-export { getAuthDataAPI, getSelectListAPI }
+// 用户信息修改
+const updateUserInfo = (data)=>{
+    return request.post('/update/user',data)
+}
+
+export { getAuthDataAPI, getSelectListAPI,updateUserInfo }
