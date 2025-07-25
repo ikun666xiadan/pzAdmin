@@ -1,6 +1,6 @@
 <template>
   <panelHeader/>
-  <el-button type="primary" @click="open(null)" style="margin: 10px 0"
+  <el-button type="primary" @click="open(null)" style="margin-bottom: 10px"
     >新增</el-button
   >
   <el-table style="width: 100%" :data="listData.list">

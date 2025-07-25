@@ -1,4 +1,5 @@
 <template>
+  <panelHeader/>
   <el-table style="width: 100%" :data="authData.list">
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />

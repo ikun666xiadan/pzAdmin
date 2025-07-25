@@ -58,12 +58,14 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { Iphone, Lock, Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { createAccountAPI, getCodeAPI, loginAPI } from "../../api/login";
 import { setToken } from "../../utils/handleToken";
+import { getUserMenu } from "../../api/menu";
+import { useStore } from "vuex";
 
 const loginFormRef = ref();
 const loading = ref(false);
@@ -78,6 +80,8 @@ const loginForm = reactive({
   validCode: "",
 });
 const router = useRouter();
+const store = useStore()
+const routerList = computed(()=>store.state.menu.routerList)
 
 const changeStatus = () => {
   isLogin.value = !isLogin.value;
@@ -154,7 +158,13 @@ const login = async () => {
       });
       if (res.code === 10000) {
         setToken(res);
-        router.push("/");
+        // 获取用户权限
+        const data = await getUserMenu()
+        // 存储菜单权限信息
+        store.commit('dynamicMenu',data.data)
+        console.log(routerList.value);
+        
+        // router.push("/");
         ElMessage.success("登录成功！");
       }
     } else {

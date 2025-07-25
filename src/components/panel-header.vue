@@ -17,6 +17,7 @@
     background: #e8edf0;
     border-color: #e8edf0;
     position: relative;
+    margin: 10px 0;
     .panel_lead {
       font-size: 15px;
       .title {

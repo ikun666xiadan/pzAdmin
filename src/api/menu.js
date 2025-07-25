@@ -15,4 +15,9 @@ const getMenuListAPI = (params)=>{
     return request.get('/menu/list',{params})
 }
 
-export  { getMenuAPI, setMenuAPI, getMenuListAPI }
+// 获取用户菜单权限
+const getUserMenu = ()=>{
+    return request.get('/menu/permissions')
+}
+
+export  { getMenuAPI, setMenuAPI, getMenuListAPI, getUserMenu }
