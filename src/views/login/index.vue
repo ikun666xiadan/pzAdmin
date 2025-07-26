@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, toRaw } from "vue";
 import { Iphone, Lock, Message } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
@@ -164,7 +164,10 @@ const login = async () => {
         store.commit('dynamicMenu',data.data)
         console.log(routerList.value);
         
-        // router.push("/");
+        toRaw(routerList.value).forEach(item => {
+          router.addRoute('main',item)
+        });
+        router.push("/");
         ElMessage.success("登录成功！");
       }
     } else {

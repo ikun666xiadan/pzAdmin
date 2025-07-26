@@ -6,6 +6,7 @@ const setToken = (res) => {
 const removeToken = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('pz_persistedState')
 }
 
 export { setToken, removeToken }

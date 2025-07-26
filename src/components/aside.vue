@@ -18,16 +18,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import TreeMenu from './treeMenu.vue';
 import { useStore } from "vuex";
+
+const route = useRoute()
 const store = useStore()
 const isCollapse = computed(()=>store.state.menu.isCollapse)
-
-const router = useRouter()
-const route = useRoute()
-const menuData = ref(router.options.routes[0].children)
+const menuData = computed(()=>store.state.menu.routerList)
+console.log(menuData);
 
 // 计算当前激活的菜单项
 const activeMenu = computed(() => {
