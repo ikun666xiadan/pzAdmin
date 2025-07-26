@@ -1,5 +1,5 @@
 <template>
-  <panelHeader/>
+  <panelHeader :data="route"/>
   <el-button type="primary" @click="open(null)" style="margin-bottom: 10px"
     >新增</el-button
   >
@@ -68,7 +68,9 @@
 import { nextTick, onMounted, reactive, ref } from "vue";
 import { getMenuAPI, getMenuListAPI, setMenuAPI } from "../../../api/menu";
 import { ElMessage } from "element-plus";
+import { useRoute } from "vue-router";
 
+const route = useRoute()
 const dialogFormVisible = ref(false);
 const formRef = ref();
 const treeRef = ref();

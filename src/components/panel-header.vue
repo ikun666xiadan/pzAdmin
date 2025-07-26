@@ -1,13 +1,18 @@
 <template>
     <div class="panel_header">
         <div class="panel_lead">
-            <div class="title">菜单管理</div>
-            <div class="description">菜单管理菜单管理菜单管理菜单管理菜单管理</div>
+            <div class="title">{{ props.data.meta.name }}</div>
+            <div class="description">{{props.data.meta.describe}}</div>
         </div>
     </div>
 </template>
   
 <script setup>
+const props = defineProps({
+  data:{
+    type:Object
+  }
+})
 
 </script>
   

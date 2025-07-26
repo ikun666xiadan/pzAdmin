@@ -1,5 +1,5 @@
 <template>
-  <panelHeader/>
+  <panelHeader :data="route"/>
   <el-table style="width: 100%" :data="authData.list">
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />
@@ -91,7 +91,9 @@ import {
 } from "../../../api/auth";
 import handelTime from "../../../utils/handelTime";
 import { ElMessage } from "element-plus";
+import { useRoute } from "vue-router";
 
+const route = useRoute()
 const dialogFormVisible = ref(false);
 const formRef = ref();
 const paginationData = reactive({ pageNum: 1, pageSize: 10 });
