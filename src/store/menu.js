@@ -3,7 +3,8 @@ const localData = localStorage.getItem('pz_persistedState')
 const state = localData ? localData.menu : {
     isCollapse: false,
     selectedMenu: [],
-    routerList:[]
+    routerList:[],
+    initActiveMenu:'1-1'
 }
 
 const mutations = {
@@ -39,6 +40,9 @@ const mutations = {
         roterSet(payload)
         // 拿到完整的路由数据
         state.routerList = payload
+    },
+    setInitActiveMenu(state,payload){
+        state.initActiveMenu = payload
     }
 }
 

@@ -5,13 +5,13 @@
         background-color="#545c64"
         class="aside-container"
         text-color="#fff"
-        :default-active="activeMenu"
+        :default-active="defaultActiveMenu"
         @open="handleOpen"
         @close="handleClose"
         :collapse="isCollapse"
         :style="{width:isCollapse ? '64px' : '200px'}"
       >
-        <p class="title">{{isCollapse ? 'DIDI' : 'DIDI陪诊'}}</p>
+        <p class="title">{{isCollapse ? '阳光' : '阳光陪诊'}}</p>
         <TreeMenu :menuData="menuData" :index="1" />
       </el-menu>
     </el-col>
@@ -27,31 +27,8 @@ const route = useRoute()
 const store = useStore()
 const isCollapse = computed(()=>store.state.menu.isCollapse)
 const menuData = computed(()=>store.state.menu.routerList)
-console.log(menuData);
+const defaultActiveMenu = computed(()=>store.state.menu.initActiveMenu)
 
-// 计算当前激活的菜单项
-const activeMenu = computed(() => {
-  const currentPath = route.path
-  
-  // 递归查找激活的菜单项
-  const findActiveMenu = (menus, parentIndex = '1') => {
-    for (const menu of menus) {
-      // 检查当前菜单项是否匹配
-      if (menu.meta && menu.meta.path === currentPath) {
-        return `${parentIndex}-${menu.meta.id}`
-      }
-      
-      // 检查子菜单
-      if (menu.children) {
-        const found = findActiveMenu(menu.children, `${parentIndex}-${menu.meta.id}`)
-        if (found) return found
-      }
-    }
-    return ''
-  }
-  
-  return findActiveMenu(menuData.value)
-})
 
 const handleOpen = ()=>{}
 const handleClose = ()=>{}

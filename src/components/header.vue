@@ -22,9 +22,9 @@
       </ul>
     </div>
     <div class="header_right flex_box">
-      <img src="../assets/card_1.png" alt="" />
+      <img :src="userInfo.avatar" alt="" />
       <el-dropdown>
-        <span class="username"> admin </span>
+        <span class="username"> {{userInfo.name}} </span>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="goLogin">退出登录</el-dropdown-item>
@@ -46,6 +46,8 @@ const selectedMenu = computed(() => store.state.menu.selectedMenu);
 const route = useRoute();
 const router = useRouter();
 const currentPath = computed(() => route.path);
+const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
 
 const close = (item, index) => {
   store.commit("removeMenu", item);

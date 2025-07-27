@@ -1,10 +1,13 @@
 <template>
-  <template v-for="item in props.menuData" :key="`${props.index}-${item.meta.id}`">
+  <template
+    v-for="item in props.menuData"
+    :key="`${props.index}-${item.meta.id}`"
+  >
     <el-menu-item
       v-if="!item.children || item.children.length == 0"
       :index="`${props.index}-${item.meta.id}`"
       :key="`menu-item-${props.index}-${item.meta.id}`"
-      @click="handelRouter(item,`${props.index}-${item.meta.id}`)"
+      @click="handelRouter(item, `${props.index}-${item.meta.id}`)"
     >
       <el-icon size="20">
         <!-- 动态组件写法 -->
@@ -12,7 +15,11 @@
       </el-icon>
       <span>{{ item.meta.name }}</span>
     </el-menu-item>
-    <el-sub-menu v-else :index="`${props.index}-${item.meta.id}`" :key="`sub-menu-${props.index}-${item.meta.id}`">
+    <el-sub-menu
+      v-else
+      :index="`${props.index}-${item.meta.id}`"
+      :key="`sub-menu-${props.index}-${item.meta.id}`"
+    >
       <template #title>
         <el-icon size="20">
           <component :is="item.meta.icon" />
@@ -30,17 +37,18 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 const props = defineProps(["menuData", "index"]);
 
 // 创建router实例
-const router = useRouter()
-const store = useStore()
+const router = useRouter();
+const store = useStore();
 // 点击菜单
-const handelRouter = (item,activeId)=>{
+const handelRouter = (item, activeId) => {
+  store.commit("addMenu", item.meta);
+  store.commit("setInitActiveMenu", activeId);
   // 路由跳转
-  router.push(item.meta.path)
-  store.commit('addMenu',item.meta)  
-}
+  router.push(item.meta.path);
+};
 </script>
