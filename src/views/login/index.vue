@@ -161,9 +161,7 @@ const login = async () => {
         // 获取用户权限
         const data = await getUserMenu()
         // 存储菜单权限信息
-        store.commit('dynamicMenu',data.data)
-        console.log(routerList.value);
-        
+        store.commit('dynamicMenu',data.data)        
         toRaw(routerList.value).forEach(item => {
           router.addRoute('main',item)
         });
