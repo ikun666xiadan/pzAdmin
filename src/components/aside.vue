@@ -19,11 +19,9 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
 import TreeMenu from './treeMenu.vue';
 import { useStore } from "vuex";
 
-const route = useRoute()
 const store = useStore()
 const isCollapse = computed(()=>store.state.menu.isCollapse)
 const menuData = computed(()=>store.state.menu.routerList)
