@@ -1,12 +1,17 @@
 <template>
-  <panelHeader :data="route"/>
+  <panelHeader :data="route" />
   <el-button type="primary" @click="open(null)" style="margin-bottom: 10px"
     >新增</el-button
   >
   <el-table style="width: 100%" :data="listData.list">
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />
-    <el-table-column prop="permissionName" label="菜单权限" width="500px" />
+    <el-table-column prop="age" label="年龄" />
+    <el-table-column prop="avatar" label="头像" />
+    <el-table-column prop="sex" label="性别" />
+    <el-table-column prop="mobile" label="手机号" />
+    <el-table-column prop="active" label="状态" />
+    <el-table-column prop="create_time" label="创建时间" />
     <el-table-column label="操作">
       <template #default="scope">
         <el-button type="primary" @click="open(scope.row)">编辑</el-button>
@@ -25,7 +30,7 @@
   </div>
   <el-dialog
     v-model="dialogFormVisible"
-    title="权限管理"
+    title="陪护管理"
     width="500"
     :before-close="beforeClose"
   >
@@ -34,23 +39,40 @@
       style="max-width: 600px"
       ref="formRef"
       :rules="rules"
+      label-width="auto"
     >
       <el-form-item label="id" v-show="false" prop="id">
         <el-input v-model="form.id" />
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" placeholder="请修改权限名称" />
+      <el-form-item label="昵称" prop="name">
+        <el-input v-model="form.name" placeholder="请输入昵称" />
       </el-form-item>
-      <el-form-item label="权限" prop="permissions">
-        <el-tree
-          style="max-width: 600px"
-          ref="treeRef"
-          :data="menuData"
-          show-checkbox
-          node-key="id"
-          :default-checked-keys="defaultCheckedKeys"
-          :default-expanded-keys="[2]"
-        />
+      <el-form-item label="头像" prop="avatar"> 
+        <el-upload
+          class="avatar-uploader"
+          action="http://localhost:5173"
+        >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="性别" prop="sex">
+        <el-radio-group v-model="form.sex">
+          <el-radio value="0">女</el-radio>
+          <el-radio value="1">男</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="年龄" prop="age"> 
+        <el-input-number v-model="form.age" :min="18" :max="100" />
+      </el-form-item>
+      <el-form-item label="手机号" prop="mobile">
+        <el-input v-model="form.mobile" placeholder="请输入手机号" />
+      </el-form-item>
+      <el-form-item label="是否生效" prop="active">
+        <el-radio-group v-model="form.active">
+          <el-radio value="0">失效</el-radio>
+          <el-radio value="1">生效</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -66,18 +88,24 @@
 
 <script setup>
 import { nextTick, onMounted, reactive, ref } from "vue";
-import { getMenuAPI, getMenuListAPI, setMenuAPI } from "../../../api/menu";
+import { getMenuAPI, setMenuAPI } from "../../../api/menu";
 import { ElMessage } from "element-plus";
 import { useRoute } from "vue-router";
+import { getNurseListAPI } from "../../../api/nurse";
 
-const route = useRoute()
+const route = useRoute();
 const dialogFormVisible = ref(false);
 const formRef = ref();
 const treeRef = ref();
+const imageUrl = ref('')
 const form = reactive({
   id: "",
   name: "",
-  permissions: "",
+  age: 0,
+  avatar: "",
+  sex: "",
+  mobile: "",
+  active: 1,
 });
 const defaultCheckedKeys = [4, 5];
 const menuData = ref([]);
@@ -93,7 +121,7 @@ const paginationData = reactive({ pageNum: 1, pageSize: 10 });
 onMounted(async () => {
   const res = await getMenuAPI();
   menuData.value = res.data;
-  getMenuList();
+  getNurseList();
 });
 
 // 编辑按钮，处理打开弹窗的逻辑
@@ -118,8 +146,9 @@ const beforeClose = () => {
 };
 
 // 获取列表
-const getMenuList = async () => {
-  const res = await getMenuListAPI(paginationData);
+const getNurseList = async () => {
+  const res = await getNurseListAPI(paginationData);
+  console.log(res);
   listData.value = res.data;
 };
 
@@ -160,4 +189,31 @@ const handleCurrentChange = (value) => {
 </script>
 
 <style lang="less" scoped>
+.avatar-uploader .avatar {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+</style>
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}
 </style>
