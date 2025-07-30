@@ -23,7 +23,7 @@
     </el-table-column>
     <el-table-column label="操作">
       <template #default="scope">
-        <el-button type="primary" @click="edit(scope.row)">编辑</el-button>
+        <el-button type="primary" @click="edit(scope.row)" :icon="Edit">编辑</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -92,6 +92,7 @@ import {
 import handelTime from "../../../utils/handelTime";
 import { ElMessage } from "element-plus";
 import { useRoute } from "vue-router";
+import { Edit } from "@element-plus/icons-vue";
 
 const route = useRoute()
 const dialogFormVisible = ref(false);

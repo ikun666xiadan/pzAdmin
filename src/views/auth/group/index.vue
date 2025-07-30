@@ -1,15 +1,13 @@
 <template>
   <panelHeader :data="route"/>
-  <el-button type="primary" @click="open(null)" style="margin-bottom: 10px"
-    >新增</el-button
-  >
+  <el-button type="primary" @click="open(null)" style="margin-bottom: 10px" :icon="Plus">新增</el-button>
   <el-table style="width: 100%" :data="listData.list">
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />
     <el-table-column prop="permissionName" label="菜单权限" width="500px" />
     <el-table-column label="操作">
       <template #default="scope">
-        <el-button type="primary" @click="open(scope.row)">编辑</el-button>
+        <el-button type="primary" @click="open(scope.row)" :icon="Edit">编辑</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -69,6 +67,7 @@ import { nextTick, onMounted, reactive, ref } from "vue";
 import { getMenuAPI, getMenuListAPI, setMenuAPI } from "../../../api/menu";
 import { ElMessage } from "element-plus";
 import { useRoute } from "vue-router";
+import { Edit, Plus } from "@element-plus/icons-vue";
 
 const route = useRoute()
 const dialogFormVisible = ref(false);
