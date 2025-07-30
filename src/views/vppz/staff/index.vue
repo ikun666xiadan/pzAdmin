@@ -1,9 +1,25 @@
 <template>
   <panelHeader :data="route" />
-  <el-button type="primary" @click="open(null)" style="margin-bottom: 10px"
+  <el-button
+    type="primary"
+    :icon="Plus"
+    @click="open(null)"
+    style="margin-bottom: 10px"
     >新增</el-button
   >
-  <el-table style="width: 100%" :data="listData.list">
+  <el-button
+    type="danger"
+    :icon="Delete"
+    @click="deleteNurse"
+    style="margin-bottom: 10px"
+    >删除</el-button
+  >
+  <el-table
+    style="width: 100%"
+    :data="listData.list"
+    @selection-change="handleSelectionChange"
+  >
+    <el-table-column type="selection" width="55" />
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />
     <el-table-column prop="age" label="年龄" />
@@ -12,16 +28,27 @@
         <el-image style="width: 80px; height: 80px" :src="scope.row.avatar" />
       </template>
     </el-table-column>
-    <el-table-column prop="sex" label="性别" />
+    <el-table-column prop="sex" label="性别" >
+      <template #default="scope"><span>{{scope.row.sex === "1" ? "男" : "女"}}</span></template>
+    </el-table-column>
     <el-table-column prop="mobile" label="手机号" />
-    <el-table-column prop="active" label="状态" />
-    <el-table-column prop="create_time" label="创建时间" />
+    <el-table-column prop="active" label="状态" >
+        <template #default="scope">
+        <el-tag :type="scope.row.active === 1 ? 'success' : 'danger'">{{
+          scope.row.active ? "正常" : "异常"
+        }}</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="create_time" label="创建时间" >
+      <template #default="scope">
+        <span>{{ handelTime(scope.row.create_time) }}</span>
+      </template>
+    </el-table-column>
     <el-table-column label="操作">
       <template #default="scope">
-        <el-button type="danger" @click="deleteNurse(scope.row)"
-          >删除</el-button
+        <el-button type="primary" @click="open(scope.row)" :icon="Edit"
+          >编辑</el-button
         >
-        <el-button type="primary" @click="open(scope.row)">编辑</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -55,7 +82,17 @@
         <el-input v-model="form.name" placeholder="请输入昵称" />
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
-        <el-button type="primary" @click="uploadAvatar">点击上传</el-button>
+        <el-button v-if="!form.avatar" type="primary" @click="uploadAvatar"
+          >点击上传</el-button
+        >
+        <div v-else>
+          <el-image
+            style="width: 148px; height: 148px; cursor: pointer"
+            :src="form.avatar"
+            @click="uploadAvatar"
+          />
+          <div style="font-size: 12px">点击头像可进行修改</div>
+        </div>
       </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-radio-group v-model="form.sex">
@@ -120,14 +157,16 @@ import {
   getAvatarListAPI,
   getNurseListAPI,
 } from "../../../api/nurse";
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox } from "element-plus";
+import { Delete, Edit, Plus } from "@element-plus/icons-vue";
+import handelTime from "../../../utils/handelTime";
 
 const route = useRoute();
 const dialogFormVisible = ref(false);
 const chooseImgDialogVisible = ref(false);
 const formRef = ref();
 const SelectedIndex = ref(0);
-const deleteArry = [];
+const selectedNurse = ref([]);
 const form = reactive({
   id: "",
   name: "",
@@ -169,7 +208,7 @@ const open = (rowData = {}) => {
   nextTick(() => {
     if (rowData) {
       // 数据回显
-      Object.assign(form, { id: rowData.id, name: rowData.name });
+      Object.assign(form, rowData)
     }
   });
 };
@@ -227,20 +266,28 @@ const confirm = () => {
   chooseImgDialogVisible.value = false;
 };
 
+// 多选
+const handleSelectionChange = (value) => {
+  selectedNurse.value = value.map(item => ({id:item.id}));
+};
+
 // 删除陪护师
-const deleteNurse = (info) => {
+const deleteNurse = () => {
   ElMessageBox.confirm("是否删除", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
     type: "error",
   })
-    .then(() => {
-      // deleteArry.push(id);
-      // const res = deleteNurseAPI(deleteArry);
-      // if (res.code === 10000) {
-      //   ElMessage.success("删除成功");
-      //   getNurseList();
-      // }
+    .then(async () => {
+      if (!selectedNurse.value.length) {
+        return ElMessage.warning("请选择需要删除的数据");
+      }
+      const res = await deleteNurseAPI({ id: selectedNurse.value });
+      
+      if (res.code === 10000) {
+        ElMessage.success("删除成功");
+        getNurseList();
+      }
     })
     .catch(() => {
       ElMessage({

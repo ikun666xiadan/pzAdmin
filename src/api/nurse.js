@@ -15,6 +15,7 @@ const getAvatarListAPI = ()=>{
     return request.get('/photo/list')
 }
 
+// 删除陪护师
 const deleteNurseAPI = (data)=>{
     return request.post('/delete/companion',data)
 }
