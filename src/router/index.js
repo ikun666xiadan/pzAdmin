@@ -3,7 +3,6 @@ import { createRouter,createWebHashHistory } from "vue-router"
 import Layout from "../views/Layout.vue"
 import Login from "../views/login/index.vue"
 
-const routerList = localStorage.getItem('pz_persistedState')
 
 const routes = [
   { 
@@ -12,6 +11,7 @@ const routes = [
     name: 'main',
     // 路由重定向
     redirect:to =>{
+      const routerList = localStorage.getItem('pz_persistedState')
       if(routerList){
         // 有子菜单
         const child = JSON.parse(routerList).menu.routerList[0].children
@@ -21,7 +21,7 @@ const routes = [
           return JSON.parse(routerList).menu.routerList[0].meta.path
         }
       }else{
-        return '/'
+        return '/login'
       }
     },
     children: []

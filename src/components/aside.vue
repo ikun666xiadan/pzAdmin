@@ -11,7 +11,7 @@
         :collapse="isCollapse"
         :style="{width:isCollapse ? '64px' : '200px'}"
       >
-        <p class="title">{{isCollapse ? '阳光' : '阳光陪诊'}}</p>
+        <p class="title">{{isCollapse ? 'DIDI' : 'DIDI陪诊'}}</p>
         <TreeMenu :menuData="menuData" :index="1" />
       </el-menu>
     </el-col>
