@@ -36,6 +36,9 @@
         <el-tag type="primary" v-if="scope.row.trade_state === '待服务'">{{
           scope.row.trade_state
         }}</el-tag>
+        <el-tag type="warning" v-if="scope.row.trade_state === '待支付'">{{
+          scope.row.trade_state
+        }}</el-tag>
         <el-tag type="success" v-if="scope.row.trade_state === '已完成'">{{
           scope.row.trade_state
         }}</el-tag>
@@ -121,7 +124,7 @@ const searchData = () => {
 
 // 确认服务完成
 const confirm = async (id) => {
-  const res = await confirmOrderAPI({id});
+  const res = await confirmOrderAPI({ id });
   if (res.code === 10000) {
     ElMessage.success("确认成功");
     getOrderList();
