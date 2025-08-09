@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside :width="isCollapse ? '64px' : '200px'" height="100%">
+      <el-aside :width="isCollapse ? '64px' : '200px'" height="100%" class="aside-transition">
         <Aside />
       </el-aside>
       <el-container>
@@ -35,6 +35,16 @@ const isCollapse = computed(()=>store.state.menu.isCollapse)
       flex: 0;
       height: 100%;
     }
+  }
+  .aside-transition {
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: width;
+    /* 确保初始状态稳定 */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    /* 防止闪烁 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 </style>
