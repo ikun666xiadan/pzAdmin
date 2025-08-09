@@ -16,6 +16,11 @@ if(localData){
   store.state.menu.routerList.forEach(item =>{
     router.addRoute('main',item)
   })
+  // 根据当前路径设置激活菜单项
+  const currentPath = window.location.hash.replace('#', '')
+  if (currentPath && currentPath !== '/login' && currentPath !== '/') {
+    store.commit('setActiveMenuByPath', currentPath)
+  }
 }
 
 // 添加路由守卫（前置路由守卫）
@@ -27,6 +32,10 @@ router.beforeEach((to, from) => {
   } else if (token && to.path === '/login') { // token存在时不允许在访问登录界面
     return '/'
   } else {
+    // 根据当前路由路径设置激活菜单项
+    if (to.path !== '/login' && to.path !== '/') {
+      store.commit('setActiveMenuByPath', to.path)
+    }
     return true
   }
 })

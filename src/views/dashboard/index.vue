@@ -62,7 +62,6 @@ const icon = {
 onMounted(async () => {
   const res = await getHomeInfoAPI();
   Object.assign(homeInfo, res.data);
-  console.log(homeInfo);
 });
 </script>
 

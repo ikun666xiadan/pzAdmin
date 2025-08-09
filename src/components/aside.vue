@@ -18,15 +18,23 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import TreeMenu from './treeMenu.vue';
 import { useStore } from "vuex";
 
 const store = useStore()
+const route = useRoute()
 const isCollapse = computed(()=>store.state.menu.isCollapse)
 const menuData = computed(()=>store.state.menu.routerList)
 const defaultActiveMenu = computed(()=>store.state.menu.initActiveMenu)
 
+// 监听路由变化，更新激活菜单项
+watch(() => route.path, (newPath) => {
+  if (newPath !== '/login' && newPath !== '/') {
+    store.commit('setActiveMenuByPath', newPath)
+  }
+}, { immediate: true })
 
 const handleOpen = ()=>{}
 const handleClose = ()=>{}
